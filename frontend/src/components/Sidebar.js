@@ -1,6 +1,7 @@
 import React from 'react';
+import logo from '../assets/logo.png';
 import {
-  TrendingUp, FileText, Briefcase, Settings, LogOut, Brain
+  TrendingUp, FileText, Briefcase, Settings, LogOut
 } from 'lucide-react';
 
 const Sidebar = ({ currentView, setCurrentView, user }) => {
@@ -8,7 +9,7 @@ const Sidebar = ({ currentView, setCurrentView, user }) => {
     <div className="bg-white shadow-sm border-r border-gray-200 w-64 min-h-screen relative">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-8">
-          <Brain className="w-8 h-8 text-blue-600" />
+          <img src={logo} alt="IntelliHire" className="w-8 h-8" />
           <h1 className="text-xl font-bold text-gray-900">IntelliHire</h1>
         </div>
         <nav className="space-y-2">

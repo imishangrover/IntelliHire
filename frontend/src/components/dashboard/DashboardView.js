@@ -1,5 +1,6 @@
 import React from 'react';
-import { Award, FileText, Target, TrendingUp, Upload, Brain, Star} from 'lucide-react';
+import { Award, FileText, Target, TrendingUp, Upload, Star} from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 const ScoreCard = ({ title, score, icon: Icon, color }) => (
   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
@@ -71,7 +72,7 @@ const DashboardView = ({ resumeFile, resumeScore, jobRecommendations, user, hand
 
       {!resumeFile ? (
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 text-center">
-          <Brain className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+          <img src={logo} alt="IntelliHire" className="w-8 h-8" />
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Upload Your Resume to Get Started</h3>
           <p className="text-gray-600 mb-6">
             Our AI will analyze your resume and provide personalized job recommendations
