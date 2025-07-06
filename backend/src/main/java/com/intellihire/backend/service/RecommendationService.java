@@ -1,0 +1,36 @@
+package com.intellihire.backend.service;
+
+import com.intellihire.model.JobRecommendation;
+import com.intellihire.backend.repository.JobRecommendationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RecommendationService {
+
+    @Autowired
+    private JobRecommendationRepository recommendationRepository;
+
+    public List<JobRecommendation> getAllRecommendations() {
+        return recommendationRepository.findAll();
+    }
+
+    public Optional<JobRecommendation> getRecommendationById(String id) {
+        return recommendationRepository.findById(id);
+    }
+
+    public List<JobRecommendation> getRecommendationsByUserId(String userId) {
+        return recommendationRepository.findByUserId(userId);
+    }
+
+    public JobRecommendation saveRecommendation(JobRecommendation recommendation) {
+        return recommendationRepository.save(recommendation);
+    }
+
+    public void deleteRecommendation(String id) {
+        recommendationRepository.deleteById(id);
+    }
+}
