@@ -64,4 +64,21 @@ public class ResumeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resume.getFilename() + "\"")
                 .body(resource);
     }
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Resource> viewResume(@PathVariable String id) throws IOException {
+    Resume resume = resumeService.getResumeById(id);
+    Path filePath = Paths.get(resume.getFileUrl());
+    Resource resource = new UrlResource(filePath.toUri());
+
+    if (!resource.exists() || !resource.isReadable()) {
+        throw new RuntimeException("File not found or unreadable");
+    }
+
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resume.getFilename() + "\"")
+            .body(resource);
+    }
+
 }
