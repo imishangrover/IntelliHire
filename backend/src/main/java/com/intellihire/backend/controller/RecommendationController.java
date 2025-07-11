@@ -1,9 +1,12 @@
 package com.intellihire.backend.controller;
 
+import com.intellihire.model.Job;
 import com.intellihire.model.JobRecommendation;
 import com.intellihire.backend.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -33,5 +36,10 @@ public class RecommendationController {
     @DeleteMapping("/{id}")
     public void deleteRecommendation(@PathVariable String id) {
         recommendationService.deleteRecommendation(id);
+    }
+
+    @GetMapping("/me")
+    public List<Job> getRecommendations(@AuthenticationPrincipal UserDetails userDetails) {
+        return recommendationService.getRecommendedJobs(userDetails.getUsername());
     }
 }
