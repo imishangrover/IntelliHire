@@ -79,7 +79,7 @@ public class ResumeService {
         // Save resume (cascades to user if needed)
         resumeRepository.save(resume);
 
-        return ResponseEntity.ok("Resume uploaded successfully.");
+        return ResponseEntity.ok(resume.getId());
     } catch (IOException e) {
         return ResponseEntity.status(500).body("Failed to upload resume.");
     }

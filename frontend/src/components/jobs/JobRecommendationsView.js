@@ -12,7 +12,9 @@ const JobCard = ({ job }) => (
       <div className="text-right">
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-4 h-4 text-yellow-500 fill-current" />
-          <span className="text-sm font-medium text-gray-700">{(job.similarity * 100).toFixed(0)}% match</span>
+          <span className="text-sm font-medium text-gray-700">
+            {(job.similarity * 100).toFixed(0)}% match
+          </span>
         </div>
         <span className="text-sm text-gray-500">{job.posted}</span>
       </div>
@@ -21,8 +23,11 @@ const JobCard = ({ job }) => (
     <div className="mb-4">
       <p className="text-sm text-gray-600 mb-2">Required Skills:</p>
       <div className="flex flex-wrap gap-2">
-        {job.skills.map((skill, idx) => (
-          <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+        {(job.skills || []).map((skill, idx) => (
+          <span
+            key={idx}
+            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+          >
             {skill}
           </span>
         ))}
@@ -47,15 +52,19 @@ const JobRecommendationsView = ({ jobRecommendations }) => {
       <h2 className="text-2xl font-bold text-gray-900">Job Recommendations</h2>
       {jobRecommendations.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {jobRecommendations.map(job => (
+          {jobRecommendations.map((job) => (
             <JobCard key={job.id} job={job} />
           ))}
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
           <Briefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Recommendations Yet</h3>
-          <p className="text-gray-600">Upload your resume to get AI-powered job recommendations</p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            No Recommendations Yet
+          </h3>
+          <p className="text-gray-600">
+            Upload your resume to get AI-powered job recommendations
+          </p>
         </div>
       )}
     </div>

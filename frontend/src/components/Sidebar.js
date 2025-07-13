@@ -29,9 +29,8 @@ const Sidebar = ({ currentView, setCurrentView, user, isAuthenticated, setAuthSt
             <button
               key={view}
               onClick={() => setCurrentView(view)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                currentView === view ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
-              }`}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${currentView === view ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+                }`}
             >
               {icon}
               {label}
@@ -41,9 +40,8 @@ const Sidebar = ({ currentView, setCurrentView, user, isAuthenticated, setAuthSt
           {user?.role === 'admin' && (
             <button
               onClick={() => setCurrentView('admin')}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                currentView === 'admin' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
-              }`}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${currentView === 'admin' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
+                }`}
             >
               <Settings className="w-5 h-5" />
               Admin Panel
@@ -66,8 +64,13 @@ const Sidebar = ({ currentView, setCurrentView, user, isAuthenticated, setAuthSt
             </div>
             <button
               onClick={() => {
-                setAuthState(false, null); // logout
-                setCurrentView('auth');
+                localStorage.removeItem('token');        // ✅ Remove token from localStorage
+                localStorage.removeItem('resumeScore');
+                localStorage.removeItem('jobRecommendations');
+                localStorage.removeItem('resumeFeedback');
+                localStorage.removeItem('resumeUploaded')
+                setAuthState(false, null);               // ✅ Clear auth state
+                setCurrentView('auth');                  // ✅ Optional: redirect to login
               }}
               className="w-full flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
             >

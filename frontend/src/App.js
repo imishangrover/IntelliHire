@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import DashboardView from './components/dashboard/DashboardView';
 import ResumeAnalysisView from './components/resume/ResumeAnalysisView';
@@ -7,11 +7,13 @@ import AdminPanel from './components/admin/AdminPanel';
 import ResumeManagerView from './components/resume/ResumeManagerView';
 import AuthView from './components/auth/AuthView';
 import { useResumeUpload } from './hooks/useResumeUpload';
+import API from './api/axios'; // ✅ Make sure this exists
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true); // ✅ optional loading state
 
   const setAuthState = (auth, userData) => {
     setIsAuthenticated(auth);
@@ -19,14 +21,43 @@ const App = () => {
     if (auth) setCurrentView('dashboard'); // redirect after login/signup
   };
 
+  // ✅ Try to auto-login on refresh
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      API.get('/users/me')
+        .then((res) => {
+          setAuthState(true, res.data);
+        })
+        .catch((err) => {
+          console.warn('Auto-login failed:', err);
+          localStorage.removeItem('token');
+          setAuthState(false, null);
+        })
+        .finally(() => {
+          setLoadingUser(false);
+        });
+    } else {
+      setLoadingUser(false);
+    }
+  }, []);
+
   const {
     resumeFile,
     resumeScore,
     jobRecommendations,
     feedback,
     isProcessing,
-    handleFileUpload
+    handleFileUpload,
   } = useResumeUpload();
+
+  if (loadingUser) {
+    return (
+      <div className="flex items-center justify-center h-screen text-gray-700">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">

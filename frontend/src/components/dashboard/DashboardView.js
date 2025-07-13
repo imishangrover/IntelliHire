@@ -1,5 +1,12 @@
 import React from 'react';
-import { Award, FileText, Target, TrendingUp, Upload, Star} from 'lucide-react';
+import {
+  Award,
+  FileText,
+  Target,
+  TrendingUp,
+  Upload,
+  Star
+} from 'lucide-react';
 import logo from '../../assets/logo.png';
 
 const ScoreCard = ({ title, score, icon: Icon, color }) => (
@@ -14,7 +21,7 @@ const ScoreCard = ({ title, score, icon: Icon, color }) => (
       </div>
     </div>
     <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
-      <div 
+      <div
         className={`h-2 rounded-full ${color.replace('bg-', 'bg-opacity-100 bg-')}`}
         style={{ width: `${score * 10}%` }}
       />
@@ -33,23 +40,28 @@ const JobCard = ({ job }) => (
       <div className="text-right">
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-4 h-4 text-yellow-500 fill-current" />
-          <span className="text-sm font-medium text-gray-700">{(job.similarity * 100).toFixed(0)}% match</span>
+          <span className="text-sm font-medium text-gray-700">
+            {(job.similarity * 100).toFixed(0)}% match
+          </span>
         </div>
         <span className="text-sm text-gray-500">{job.posted}</span>
       </div>
     </div>
-    
+
     <div className="mb-4">
       <p className="text-sm text-gray-600 mb-2">Required Skills:</p>
       <div className="flex flex-wrap gap-2">
-        {job.skills.map((skill, idx) => (
-          <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+        {(job.skills || []).map((skill, idx) => (
+          <span
+            key={idx}
+            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+          >
             {skill}
           </span>
         ))}
       </div>
     </div>
-    
+
     <div className="flex justify-between items-center">
       <div>
         <p className="text-sm font-medium text-gray-900">{job.salary}</p>
@@ -62,7 +74,13 @@ const JobCard = ({ job }) => (
   </div>
 );
 
-const DashboardView = ({ resumeFile, resumeScore, jobRecommendations, user, handleFileUpload }) => {
+const DashboardView = ({
+  resumeFile,
+  resumeScore,
+  jobRecommendations,
+  user,
+  handleFileUpload
+}) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -73,7 +91,9 @@ const DashboardView = ({ resumeFile, resumeScore, jobRecommendations, user, hand
       {!resumeFile ? (
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 text-center">
           <img src={logo} alt="IntelliHire" className="w-8 h-8" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Upload Your Resume to Get Started</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            Upload Your Resume to Get Started
+          </h3>
           <p className="text-gray-600 mb-6">
             Our AI will analyze your resume and provide personalized job recommendations
           </p>

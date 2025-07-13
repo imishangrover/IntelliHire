@@ -1,14 +1,52 @@
 import React from 'react';
 import { Upload, Eye, Download } from 'lucide-react';
+import API from '../../api/axios';
 
 const ResumeManagerView = ({ resumeFile, handleFileUpload }) => {
-  const handleDownload = () => {
-    if (resumeFile) {
-      const url = URL.createObjectURL(resumeFile);
+  console.log("resumeFile: ", resumeFile);
+  const resumeId = resumeFile?.id;
+
+  const handleDownload = async () => {
+    console.log("ResumeID: ", resumeId);
+    if (!resumeId) return;
+
+    try {
+      const response = await API.get(`/resumes/download/${resumeId}`, {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      console.log("blob`", blob);
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
+      console.log("link", link)
       link.href = url;
-      link.download = 'resume.pdf';
+      link.download = resumeFile.name || 'resume.pdf';
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url); // ✅ Safe here
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Failed to download resume.');
+    }
+  };
+
+  const handleView = async () => {
+    if (!resumeId) return;
+
+    try {
+      const response = await API.get(`/resumes/view/${resumeId}`, {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank'); // ✅ DON'T revoke URL immediately
+      // Do NOT call URL.revokeObjectURL here
+    } catch (error) {
+      console.error('View failed:', error);
+      alert('Failed to open resume.');
     }
   };
 
@@ -18,10 +56,12 @@ const ResumeManagerView = ({ resumeFile, handleFileUpload }) => {
 
       {resumeFile ? (
         <div className="space-y-4">
-          <p className="text-gray-600">Current Resume: <strong>{resumeFile.name}</strong></p>
+          <p className="text-gray-600">
+            Current Resume: <strong>{resumeFile.name}</strong>
+          </p>
           <div className="flex gap-4">
             <button
-              onClick={() => window.open(URL.createObjectURL(resumeFile), '_blank')}
+              onClick={handleView}
               className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
             >
               <Eye className="w-4 h-4" /> View
@@ -50,7 +90,12 @@ const ResumeManagerView = ({ resumeFile, handleFileUpload }) => {
           <label className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 cursor-pointer">
             <Upload className="w-5 h-5" />
             Upload Resume (PDF)
-            <input type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
           </label>
         </div>
       )}
